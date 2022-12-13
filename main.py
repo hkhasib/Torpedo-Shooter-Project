@@ -1,5 +1,5 @@
 import pygame
-from Parallax import Parallax
+from parallax import Parallax
 import math
 
 pygame.init()
