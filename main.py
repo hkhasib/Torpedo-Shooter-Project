@@ -25,8 +25,6 @@ while Running:
 
         parallax.drawParallax()
 
-        key = pygame.key.get_pressed()
-
         if scroll < 10000:
             scroll += 1
         parallax.setScroll(scroll)
