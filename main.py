@@ -1,4 +1,5 @@
-import pygame
+import pygame, sys
+from button import Button
 from GameLogics.Parallax import Parallax
 import math
 import random
@@ -20,98 +21,130 @@ startTime = 0
 # Screen and Game Identity
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Endless Scroll")
+def play():
+    Running = True
+    # Background
+    layer = pygame.image.load('./Assets/Images/Backgrounds/Level1/layer.png').convert_alpha();
+    scroll = 0
+    bg_images = []
+    for i in range(1, 6):
+        bg_image = pygame.image.load('./Assets/Images/Backgrounds/Level1/' + str(i) + '.png').convert_alpha()
+        bg_images.append(bg_image)
 
-# Background
-layer = pygame.image.load('./Assets/Images/Backgrounds/Level1/layer.png').convert_alpha();
-scroll = 0
-bg_images = []
-for i in range(1, 6):
-    bg_image = pygame.image.load('./Assets/Images/Backgrounds/Level1/' + str(i) + '.png').convert_alpha()
-    bg_images.append(bg_image)
+    parallax = Parallax(bg_images, 22, screen)
 
-parallax = Parallax(bg_images, 22, screen)
+    # Background sound
 
-# Background sound
+    mixer.music.load('./Assets/Sounds/UnderwaterAmbience.wav')
+    mixer.music.play(-1)
 
-mixer.music.load('./Assets/Sounds/UnderwaterAmbience.wav')
-mixer.music.play(-1)
+    sharkCollission=mixer.Sound('./Assets/Sounds/Game Marker Hit 5.wav')
 
-sharkCollission=mixer.Sound('./Assets/Sounds/Game Marker Hit 5.wav')
-
-sharkCollissionSound=False
+    sharkCollissionSound=False
 
 
-# Player
-playerX = 0
-playerY = 300
+    # Player
+    playerX = 0
+    playerY = 300
 
-playerChange = 0
-p_sprite_last = 2
+    playerChange = 0
+    p_sprite_last = 2
 
-player = Player(screen, playerX, playerY)
-player_status = "idle"
+    player = Player(screen, playerX, playerY)
+    player_status = "idle"
 
-enemyX = 1100
-enemyY = 200
-enemy = Enemy(screen, 1, enemyX, enemyY)
-enemy_change = 0.9
+    enemyX = 1100
+    enemyY = 200
+    enemy = Enemy(screen, 1, enemyX, enemyY)
+    enemy_change = 0.9
 
-all_sprites = SpriteHandler()
-while Running:
-    clock.tick(FPS)
-    parallax.drawParallax()
-    # player(math.ceil(playerChange))
+    all_sprites = SpriteHandler()
+    while Running:
+        clock.tick(FPS)
+        parallax.drawParallax()
+        # player(math.ceil(playerChange))
 
-    if player_status == "idle" or player_status == "hit":
-        p_sprite_last = 10.8
-    elif player_status == "die":
-        p_sprite_last = 18
+        if player_status == "idle" or player_status == "hit":
+            p_sprite_last = 10.8
+        elif player_status == "die":
+            p_sprite_last = 18
 
-    if playerChange > p_sprite_last:
-        playerChange = 0
+        if playerChange > p_sprite_last:
+            playerChange = 0
 
-    player.player_movement()
+        player.player_movement()
 
-    enemy_change += 0.1
+        enemy_change += 0.1
 
-    if enemy_change > 8:
-        enemy_change = 0
+        if enemy_change > 8:
+            enemy_change = 0
 
-    player.place_character(0.3, player_status)
+        player.place_character(0.3, player_status)
 
-    enemy.place_character(all_sprites.get_shark(math.ceil(enemy_change), 'idle'))
-    # pygame.draw.rect(screen, (255, 255, 255), player.get_rect(), 2)
-    # pygame.draw.rect(screen, (255, 255, 255), enemy.get_rect(), 2)
-    enemyX -= 2
-    if enemy.get_x() <= -250:
-        enemyX = 1300
-        enemyY = random.randrange(0, 600)
-    enemy.set_x(enemyX)
-    enemy.set_y(enemyY)
+        enemy.place_character(all_sprites.get_shark(math.ceil(enemy_change), 'idle'))
+        # pygame.draw.rect(screen, (255, 255, 255), player.get_rect(), 2)
+        # pygame.draw.rect(screen, (255, 255, 255), enemy.get_rect(), 2)
+        enemyX -= 2
+        if enemy.get_x() <= -250:
+            enemyX = 1300
+            enemyY = random.randrange(0, 600)
+        enemy.set_x(enemyX)
+        enemy.set_y(enemyY)
 
-    if player.get_rect().colliderect(enemy.get_rect()):
-        if player_status != "hit" or player_status != "die":
-            if not sharkCollissionSound:
-                sharkCollission.play()
-                sharkCollissionSound=True
-            startTime = time.time()
-            player_status = "hit"
+        if player.get_rect().colliderect(enemy.get_rect()):
+            if player_status != "hit" or player_status != "die":
+                if not sharkCollissionSound:
+                    sharkCollission.play()
+                    sharkCollissionSound=True
+                startTime = time.time()
+                player_status = "hit"
 
-        # if abs(startTime - time.time()) >= 3:
-        #     enemyX = 4050
-    else:
-        player_status = "idle"
-        sharkCollissionSound = False
+            # if abs(startTime - time.time()) >= 3:
+            #     enemyX = 4050
+        else:
+            player_status = "idle"
+            sharkCollissionSound = False
 
-    if scroll < 10000:
-        scroll += 0.5
-    parallax.setScroll(scroll)
+        if scroll < 10000:
+            scroll += 0.5
+        parallax.setScroll(scroll)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            Running = False
-        player.player_controller(event)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                Running = False
+            player.player_controller(event)
 
-    screen.blit(layer, (0, 0))
-    pygame.display.update()
-pygame.quit()
+        screen.blit(layer, (0, 0))
+        pygame.display.update()
+    pygame.quit()
+
+def get_font(size): # Returns Press-Start-2P in the desired size
+    return pygame.font.Font("Assets/font.ttf", size)
+
+def menu():
+    while True:
+        pygame.display.set_caption("Menu")
+        bg_image = pygame.image.load('Assets/Background.png').convert_alpha()
+        screen.blit(bg_image,(0,0))
+        MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+        MENU_TEXT = get_font(100).render("MAIN MENU", True, "#b68f40")
+        MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
+
+        screen.blit(MENU_TEXT, MENU_RECT)
+        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(640, 250),
+            text_input="PLAY", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
+#   OPTION FOR OTHER BUTTON TOO
+        for button in [PLAY_BUTTON]:
+            button.changeColor(MENU_MOUSE_POS)
+            button.update(screen)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    play()
+        pygame.display.update()
+
+menu()
