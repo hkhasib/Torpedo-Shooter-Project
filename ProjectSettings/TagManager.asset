@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Background
+  - Creatures
+  - PlayerActionPoint
+  - ObjectDestroyer
+  - PlayerHintPoint
+  - Torpedo
+  - Bullet
+  - Enemy
+  - EnemyTorpedo
+  - EnemyTorpedoPoint
+  - LeftOuterTarget
+  - EnemyShootPoint
+  - PlayerTorpedoPoint
+  - PlayerBulletPoint
+  - TopOuterTarget
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Sky
+  - Water
+  - UI
+  - RemoteBackground2
+  - RemoteBackground1
+  - Background2
+  - Background1
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Sky
+    uniqueID: 684590221
+    locked: 0
+  - name: Background
+    uniqueID: 1800736253
+    locked: 0
+  - name: Character
+    uniqueID: 2962549561
+    locked: 0
