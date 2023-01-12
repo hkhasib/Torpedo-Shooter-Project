@@ -8,11 +8,12 @@ public class Boss : Enemy
     private int randomNum= 0;
     private float x = 0.01f, y=0.01f;
     private bool changeXPos=false, returnPos=false;
-    public static bool boosReady=false;
+    public static bool bossReady=false;
     public Transform topPos, bottomPos;
     
     void Start()
     {
+        bossReady = false;
         if (!hasLight)
         {
             bodyLight.intensity = 0f;
@@ -30,35 +31,28 @@ public class Boss : Enemy
         
 
         enemyTorpedoPoint.position = new Vector3(transform.position.x-2.54218f, transform.position.y- 0.2305602f, enemyTorpedoPoint.position.z);
-        randomNum = Random.Range(1, 13);
-        if (randomNum > 5 && randomNum < 11)
-        {
-            attack = true;
-        }
-        else if(randomNum>=11){
-            changeXPos= true;
-        }
         
-        if (boosReady&&!LevelManager.levelComplete)
-        {
-            float posY = Mathf.PingPong(Time.time * 0.5f, 1) * 6 - 3;
-            transform.position = new Vector3(transform.position.x, posY, transform.position.z);
+        float posY = Mathf.PingPong(Time.time * 0.5f, 1) * 6 - 3;
+        transform.position = new Vector3(transform.position.x, posY, transform.position.z);
+        //if (boosReady&&!LevelManager.levelComplete)
+        //{
+            
 
-            x = x + y;
-            if (x > 5f)
-            {
-                y = -0.01f;
+        //    x = x + y;
+        //    if (x > 5f)
+        //    {
+        //        y = -0.01f;
 
-                ShootTorpedo();
+        //        ShootTorpedo();
 
-            }
-            if (x < 0)
-            {
-                y = 0.01f;
-            }
+        //    }
+        //    if (x < 0)
+        //    {
+        //        y = 0.01f;
+        //    }
 
 
-        }
+        //}
     }
 
     private IEnumerator shootDelay()
@@ -81,7 +75,15 @@ public class Boss : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Bullet")
+        if (collision.gameObject.tag == "bossPoint")
+        {
+            if(bossReady && !LevelManager.levelComplete)
+            {
+                ShootTorpedo();
+            }
+            
+        }
+            if (collision.gameObject.tag == "Bullet")
         {
 
             Player.bulletHitted = true;
@@ -118,6 +120,7 @@ public class Boss : Enemy
             }
             else
             {
+                AudioManager.Instance.PlaySound("playerMissileHit");
                 StartCoroutine(hitAnimation(0.2f));
             }
             
@@ -137,7 +140,7 @@ public class Boss : Enemy
 
     private IEnumerator levelFinishDelay()
     {
-        boosReady = false;
+        bossReady = false;
         bodyLight.intensity = 0f;
         torchLight.intensity = 0f;
         enemyAnimator.SetBool("die", true);

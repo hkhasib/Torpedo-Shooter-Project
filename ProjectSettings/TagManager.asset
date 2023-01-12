@@ -19,6 +19,13 @@ TagManager:
   - PlayerTorpedoPoint
   - PlayerBulletPoint
   - TopOuterTarget
+  - EnemyFastTorpedo
+  - Boss
+  - bossPoint
+  - playerLockPoint
+  - BossTorpedoPoint
+  - BossTorpedo
+  - RedStar
   layers:
   - Default
   - TransparentFX

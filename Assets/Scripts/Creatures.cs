@@ -10,7 +10,7 @@ public class Creatures : Character
     private bool hitPoint = false;
     private Animator creatureAnimator;
     public float speed = 0f;
-    public Transform target;
+    private Transform target;
     private GameObject player;
     private Transform playerTransform;
     private Vector2 playerInitialPosition;
@@ -21,6 +21,7 @@ public class Creatures : Character
         playerTransform = player.transform;
         creature = GetComponent<Transform>();
         creatureAnimator= GetComponent<Animator>();
+        target = GameObject.FindWithTag("LeftOuterTarget").transform;
     }
 
     // Update is called once per frame

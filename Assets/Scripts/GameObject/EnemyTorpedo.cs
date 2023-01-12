@@ -8,9 +8,16 @@ public class EnemyTorpedo : Projectile
     private Transform playerTransform, playerActionPoint;
     private bool shoot = false;
     private bool targetMissed = false;
-    
+    public bool smartTorpedo = false, bossTorpedo = false;
     void Start()
     {
+        
+        
+        if(!smartTorpedo)
+        {
+            speed = speed * 2f;
+        }
+        
         secondaryTarget = GameObject.FindWithTag("LeftOuterTarget").transform.position;
         playerTransform = GameObject.FindWithTag("Player").transform;
         playerActionPoint = GameObject.FindWithTag("PlayerActionPoint").transform;
@@ -45,8 +52,61 @@ public class EnemyTorpedo : Projectile
     {
         if (collision.gameObject.tag == "PlayerActionPoint")
         {
-            primaryTarget = playerTransform.position;
+
+
+            if(!bossTorpedo)
+            {
+                if (smartTorpedo)
+                {
+                    primaryTarget = playerTransform.position;
+                }
+                else
+                {
+                    primaryTarget = secondaryTarget;
+                }
+            }
             
+           
+            
+            shoot = true;
+        }
+
+        if (collision.gameObject.tag == "BossTorpedoPoint")
+        {
+
+            
+
+            if (smartTorpedo)
+            {
+                if(Random.Range(1, 13) > 10)
+                {
+                    speed = speed * 4;
+                    primaryTarget = secondaryTarget;
+                }
+                else
+                {
+                    speed = speed * 3;
+                    primaryTarget = playerTransform.position;
+                }
+                
+            }
+            else
+            {
+                if (Random.Range(1, 13) > 10)
+                {
+                    speed = speed * 3;
+                    primaryTarget = playerTransform.position;
+                }
+                else
+                {
+                    speed = speed * 4;
+                    primaryTarget = secondaryTarget;
+                }
+                
+            }
+
+
+
             shoot = true;
         }
     }

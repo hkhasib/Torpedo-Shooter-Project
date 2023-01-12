@@ -12,15 +12,16 @@ public class ParallaxBackground : TorpedoShooter
     public Transform background4;
     public Transform background5;
     public Transform background6;
+    public Transform background7;
 
 
-    
+
     public float scroll2 = 1.0f;
     public float scroll3 = 1.0f;
     public float scroll4 = 1.0f;
     public float scroll5 = 1.0f;
     public float scroll6 = 1.0f;
-
+    public float scroll7 = 1.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +38,6 @@ public class ParallaxBackground : TorpedoShooter
         background4.transform.position = new Vector3(cameraTransform.position.x * scroll4, background4.position.y, background4.position.z);
         background5.transform.position = new Vector3(cameraTransform.position.x * scroll5, background5.position.y, background5.position.z);
         background6.transform.position = new Vector3(cameraTransform.position.x * scroll6, background6.position.y, background6.position.z);
-
+        background7.transform.position = new Vector3(cameraTransform.position.x * scroll7, background7.position.y, background7.position.z);
     }
 }
