@@ -40,8 +40,9 @@ public class PlayerTorpedo : Projectile
         {
             shoot = true;
         }
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy"|| collision.gameObject.tag == "Boss")
         {
+            LevelManager.score = LevelManager.score + 5;
             Destroy(gameObject);
         }
     }
